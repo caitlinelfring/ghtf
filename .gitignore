@@ -1,0 +1,7 @@
+.terraform
+secrets.auto.tfvars
+*.tfstate*
+*_tmp.tf
+
+*.tf
+!main.tf
