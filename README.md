@@ -4,7 +4,9 @@ Script to import a GitHub repo, default branch, and branch protections into Terr
 
 **NOTE:** This script will clean up all generated `*.tf` files and any local statefiles in this directory before each run.
 
-It uses local state files to handle the initial importing, but will use whatever statefile you have configured.
+**Please don't use a remote statefile for running this. I suggest importing all your
+repos into a local statefile and then importing them into your remote statefile to
+avoid destroying anything accidentally.**
 
 ## Configure
 
@@ -26,8 +28,8 @@ EOF
 Supports only terraform `0.12` right now.
 
 ```bash
-./run.sh repo_name
+./run.sh repo_name1 repo_name2
 ```
 
-You should see `repo_name.tf` created once the script finishes and you should see
-`No changes. Infrastructure is up-to-date.` if everything was successful.
+You should see `repo_name1.tf` and `repo_name2.tf` created once the script finishes
+and you should see `No changes. Infrastructure is up-to-date.` if everything was successful.

@@ -105,17 +105,20 @@ import() {
   rm -f "${repo}"*.tf
   import_repo "${repo}"
   import_default_branch "${repo}"
-  # import_branch_protections "${repo}"
+  import_branch_protections "${repo}"
 }
 
-if [ -z "${1}" ]; then
-  echo "Usage: $0 [repo_name]"
+if [ "$#" == 0 ]; then
+  echo "Usage: $0 [repo_names...]"
   exit 1
 fi
 # Delete local state before running. WARNING! You can't go back from this!!!
 rm -f terraform.tfstate*
 find . -name "*.tf" ! -name "main.tf" -delete
-import "${1}"
+
+for repo in "$@"; do
+  import "${repo}"
+done
 
 terraform fmt -write
 terraform plan
