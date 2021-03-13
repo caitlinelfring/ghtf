@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 # https://github.com/hashicorp/learn-terraform-import
 
@@ -36,17 +36,19 @@ import_repo() {
 # (for the default branch only right now) and generate valid terraform config based on the import
 import_branch_protections() {
   local repo="${1}"
+  local state="state/${repo}/branch_protection.tfstate"
+  local tmp="${repo}_branch_protection_tmp.tf"
+  rm -f "${state}"
+  trap "rm -f ${state} ${tmp}" RETURN
+  mkdir -p "state/${repo}"
+
   local default_branch
   default_branch=$(get_default_branch "${repo}")
 
-  mkdir -p "state/${repo}"
-  local state="state/${repo}/branch_protection.tfstate"
-  rm -f "${state}"
-
-  local tmp="${repo}_branch_protection_tmp.tf"
   echo 'resource "github_branch_protection" "'"${repo}-${default_branch}"'" {}' > "${tmp}"
 
-  terraform import -state="${state}" "github_branch_protection.${repo}-${default_branch}" "${repo}:${default_branch}"
+  terraform import -state="${state}" "github_branch_protection.${repo}-${default_branch}" "${repo}:${default_branch}" || return
+
   terraform show -no-color "${state}" > "${tmp}"
 
   # convert repository_id to a reference
@@ -57,8 +59,6 @@ import_branch_protections() {
   gsed -E '/\s+(id)/d' "${tmp}" >> "${repo}.tf"
 
   mv_state "${state}" "github_branch_protection.${repo}-${default_branch}"
-
-  rm -f "${state}" "${tmp}"
 }
 
 # import_default_branch will run a terraform import to pull in the existing default branch
