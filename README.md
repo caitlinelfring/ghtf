@@ -39,7 +39,7 @@ and you should see `No changes. Infrastructure is up-to-date.` if everything was
 You can also supply repo names via a text file with:
 
 ```bash
-./run.sh "$(< repos.txt)"
+./run.sh $(< repos.txt)
 ```
 
 where `repos.txt` is a text file with each repo listed on its own line.
