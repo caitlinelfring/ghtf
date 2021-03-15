@@ -117,7 +117,10 @@ rm -f terraform.tfstate*
 find . -name "*.tf" ! -name "main.tf" -delete
 
 for repo in "$@"; do
+  echo "##################### Starting import of ${repo}..."
   import "${repo}"
+  echo "##################### Finished import of ${repo}..."
+  echo
 done
 
 terraform fmt -write

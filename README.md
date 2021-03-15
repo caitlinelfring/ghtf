@@ -33,3 +33,20 @@ Supports only terraform `0.12` right now.
 
 You should see `repo_name1.tf` and `repo_name2.tf` created once the script finishes
 and you should see `No changes. Infrastructure is up-to-date.` if everything was successful.
+
+### Running against multiple repos
+
+You can also supply repo names via a text file with:
+
+```bash
+./run.sh "$(< repos.txt)"
+```
+
+where `repos.txt` is a text file with each repo listed on its own line.
+
+For example:
+
+```text
+repo_name1
+repo_name2
+```
