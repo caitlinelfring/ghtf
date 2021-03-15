@@ -25,7 +25,7 @@ EOF
 
 ## Running
 
-Supports only terraform `0.12` right now.
+Supports only terraform `0.12` or `0.13` right now.
 
 ```bash
 ./run.sh repo_name1 repo_name2
